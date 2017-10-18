@@ -1,7 +1,7 @@
 username: twotter
 password: twotter
 database: twotter
-twotter_database_host: twotter
+twotter_database_host: psql
 twotter_database_name: twotter
 twotter_database_user: twotter
 twotter_database_pass: twotter
