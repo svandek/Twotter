@@ -31,7 +31,7 @@
 
     - name: copy default nginx config file
       copy:
-        src: /home/{{ username }}/silex/nginx.conf
+        src: /home/{{ username }}/silex/playbook-files/nginx.conf
         dest: /etc/nginx/sites-available/nginx.conf
         remote_src: true
 
