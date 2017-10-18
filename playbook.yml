@@ -54,7 +54,7 @@
     - name: copy default nginx config file
       copy:
         src: /home/{{ username }}/silex/playbook-files/nginx.conf
-        dest: /etc/nginx/sites-available/nginx.conf
+        dest: /etc/nginx/sites-available/default
         remote_src: true
 
     - name: Install composer
