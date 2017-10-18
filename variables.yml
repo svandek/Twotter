@@ -14,7 +14,7 @@ packages:
   - php-pgsql
   - python-psycopg2
 git_repo: https://github.com/svandek/stage.git
-git_repo2: https://github.com/svandek/Twotter2.git
+git_repo2: https://github.com/svandek/Twotter.git
 services:
   - php7.0-fpm
   - nginx

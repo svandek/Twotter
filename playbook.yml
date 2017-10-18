@@ -29,12 +29,6 @@
         dest: /etc/php/7.0/fpm/php.ini
         remote_src: true
 
-    - name: copy default nginx config file
-      copy:
-        src: /home/{{ username }}/silex/playbook-files/nginx.conf
-        dest: /etc/nginx/sites-available/nginx.conf
-        remote_src: true
-
     - name: get composer
       shell: curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin
       args:
@@ -56,6 +50,12 @@
       git:
         repo: "{{ git_repo2 }}"
         dest: /home/{{ username }}/silex
+
+    - name: copy default nginx config file
+      copy:
+        src: /home/{{ username }}/silex/playbook-files/nginx.conf
+        dest: /etc/nginx/sites-available/nginx.conf
+        remote_src: true
 
     - name: Install composer
       composer: 
