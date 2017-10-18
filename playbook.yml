@@ -31,8 +31,8 @@
 
     - name: copy default nginx config file
       copy:
-        src: /home/{{ username }}/deploy/default
-        dest: /etc/nginx/sites-available/default
+        src: /home/{{ username }}/silex/nginx.conf
+        dest: /etc/nginx/sites-available/nginx.conf
         remote_src: true
 
     - name: get composer
