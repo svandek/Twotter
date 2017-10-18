@@ -1,0 +1,21 @@
+username: twotter
+password: twotter
+database: twotter
+twotter_database_host: twotter
+twotter_database_name: twotter
+twotter_database_user: twotter
+twotter_database_pass: twotter
+packages:
+  - git
+  - php-fpm
+  - nginx
+  - curl
+  - postgresql
+  - php-pgsql
+  - python-psycopg2
+git_repo: https://github.com/svandek/stage.git
+git_repo2: https://github.com/svandek/Twotter2.git
+services:
+  - php7.0-fpm
+  - nginx
+  - postgresql

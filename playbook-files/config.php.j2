@@ -1,0 +1,10 @@
+<?php
+
+$app['database'] = [
+    'driver'   => 'pdo_pgsql',
+    'host'     => '{{ twotter_database_host }}',
+    'dbname'   => '{{ twotter_database_name }}',
+    'user'     => '{{ twotter_database_user }}',
+    'password' => '{{ twotter_database_pass }}',
+    'charset'  => 'utf8',
+];

@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block style %}
+	<style>
+		body {
+			background-color: {{ style.col1 }};
+		}
+
+		h1 {
+			color: {{ style.col1 }};
+		}
+	</style>
+{% endblock %}
+
+
+{% block title %}
+Twotter
+{% endblock %}
+
+{% block content %}
+<div id="wrapper">
+	<div id="header">
+		<div id="logo">
+			<form method="POST">
+				<button id="slogan" type="submit" formaction="/theme">Twotter</button>
+				<img id="logo_img" src="../img/sea-otter.png.jpeg">
+			</form>
+		</div>
+
+
+		<div id="app">
+			<div class="form">
+				<form method="POST">
+					<p>Message to post on your personal Twotter board</p>
+					<textarea id="inputfield" type="text" name="msg"></textarea>
+					<div id="buttonArea">
+						<button type="submit"><p>Twoot</p></button>
+						<button type="submit" formaction="/destroy"><p>Destroy</p></button>
+						<button type="submit" formaction="/remove"><p>Remove</p></button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<div id="msgboard">
+	{% for twoot in twoots %}
+		<div class="msg">
+			{{twoot.msg}}
+			<div class="created">
+				{{twoot.created}}
+			</div>
+		</div>
+	{% endfor %}
+	</div>
+
+	<div id="footer">
+
+	</div>
+</div>
+{% endblock %}

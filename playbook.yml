@@ -1,0 +1,89 @@
+- hosts: all
+  become: yes
+  pre_tasks:
+    - include_vars: variables.yml
+  tasks:
+    - name: Add deployment user
+      user:
+        name: "{{ username }}"
+        password: "{{ password }}"
+
+    - name: install packages
+      apt:
+        name: "{{ packages }}"
+        state: installed
+        update_cache: true
+
+    - name: install setfacl support
+      become: yes
+      apt: pkg=acl
+
+    - name: link to git
+      git:
+        repo: "{{ git_repo }}"
+        dest: /home/{{ username }}/deploy
+
+    - name: copy php.ini file
+      copy:
+        src: /home/{{ username }}/deploy/php.ini
+        dest: /etc/php/7.0/fpm/php.ini
+        remote_src: true
+
+    - name: copy default nginx config file
+      copy:
+        src: /home/{{ username }}/deploy/default
+        dest: /etc/nginx/sites-available/default
+        remote_src: true
+
+    - name: get composer
+      shell: curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin
+      args:
+        creates: /usr/local/bin/composer.phar
+        warn: false
+    
+    - name: create link /usr/local/bin/composer to phar
+      file:
+        path: /usr/local/bin/composer
+        src: /usr/local/bin/composer.phar
+        state: link
+
+    - name: update composer
+      shell: /usr/local/bin/composer.phar self-update
+      register: composer_update_result
+      changed_when: "'Updating to version' in composer_update_result.stdout"
+
+    - name: second git link
+      git:
+        repo: "{{ git_repo2 }}"
+        dest: /home/{{ username }}/silex
+
+    - name: Install composer
+      composer: 
+        command: install
+        working_dir: /home/{{ username }}/silex
+
+    - name: restart services
+      service:
+        name: "{{ item }}"
+        state: restarted
+      with_items: "{{ services }}"
+
+    - name: Create Database
+      become: yes
+      become_user: postgres
+      postgresql_db:
+        name: "{{ database }}"
+
+    - name: Create User
+      become: yes
+      become_user: postgres
+      postgresql_user: name={{ username }} password={{ password }} state=present role_attr_flags=SUPERUSER,CREATEDB
+
+    - name: Provide user with DB permissions
+      become: yes
+      become_user: postgres
+      postgresql_user: user={{ username }} db={{ database }} priv=ALL
+
+    - template:
+        src: playbook-files/config.php.j2
+        dest: /home/{{ username }}/silex/app/config.php

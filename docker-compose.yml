@@ -1,0 +1,44 @@
+version: '3.3'
+services:
+    app:
+        image: docker.tgrep.nl/docker/webserver-image:latest
+        user: "$USER_ID:$GROUP_ID"
+        depends_on: [psql]
+        volumes:
+            - ".:/app"
+            - "~/.composer:/.composer"
+            - "/etc/localtime:/etc/localtime:ro"
+        expose: [9000]
+        command: [/usr/sbin/php-fpm7.0]
+        working_dir: /app
+        environment:
+            PGHOST: psql
+            DOCKER: 1
+        networks: [default]
+    nginx:
+        image: nginx:latest
+        depends_on: [app]
+        volumes:
+            - ".:/app"
+            - "./docker/nginx.conf:/etc/nginx/nginx.conf:ro"
+            - "./docker/certificates/app-dev.pem:/etc/ssl/app-dev.pem:ro"
+            - "./docker/certificates/app-dev.key:/etc/ssl/app-dev.key:ro"
+            - "/etc/localtime:/etc/localtime:ro"
+        ports: ["127.0.0.1:443:443", "127.0.0.1:80:80", "127.0.0.1:8080:8080"]
+        networks:
+            default:
+                aliases:
+                    - app.dev
+                    - admin.dev
+    psql:
+        image: postgres:9.6
+        environment:
+            POSTGRES_USER: tg
+        volumes:
+            - "/etc/localtime:/etc/localtime:ro"
+        ports: ["127.0.0.1:5432:5432"]
+        networks: [default]
+
+
+networks:
+    default: ~
