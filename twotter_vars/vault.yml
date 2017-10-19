@@ -1,6 +1,7 @@
-dep_user: twotter
-dep_pass: twotter
+dep_user: deployer
+dep_pass: deployer
+db_host: localhost
 dep_db: twotter
-vault_db_host: localhost
-git_repo1: https://github.com/svandek/stage.git
-git_repo2: https://github.com/svandek/Twotter.git
+db_user: twotter
+db_pass: twotter
+git_repo: https://github.com/svandek/Twotter.git

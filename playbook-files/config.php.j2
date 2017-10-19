@@ -2,9 +2,9 @@
 
 $app['database'] = [
     'driver'   => 'pdo_pgsql',
-    'host'     => '{{ twotter_database_host }}',
-    'dbname'   => '{{ twotter_database_name }}',
-    'user'     => '{{ twotter_database_user }}',
-    'password' => '{{ twotter_database_pass }}',
+    'host'     => '{{ db_host }}',
+    'dbname'   => '{{ dep_db }}',
+    'user'     => '{{ db_user }}',
+    'password' => '{{ db_pass }}',
     'charset'  => 'utf8',
 ];

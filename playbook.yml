@@ -21,7 +21,7 @@
 
     - name: link to git
       git:
-        repo: "{{ git_repo1 }}"
+        repo: "{{ git_repo }}"
         dest: /home/{{ dep_user }}/deploy
 
     - name: copy php.ini file
@@ -46,11 +46,6 @@
       shell: /usr/local/bin/composer.phar self-update
       register: composer_update_result
       changed_when: "'Updating to version' in composer_update_result.stdout"
-
-    - name: second git link
-      git:
-        repo: "{{ git_repo2 }}"
-        dest: /home/{{ dep_user }}/deploy
 
     - name: copy default nginx config file
       copy:
@@ -94,4 +89,4 @@
 
     - template:
         src: playbook-files/config.php.j2
-        dest: /home/{{ dep_user }}/silex/app/config.php
+        dest: /home/{{ dep_user }}/deploy/app/config.php
