@@ -1,12 +1,13 @@
 - hosts: all
   become: yes
   pre_tasks:
-    - include_vars: variables.yml
+    - include_vars: twotter_vars/variables.yml
+    - include_vars: twotter_vars/vault.yml
   tasks:
     - name: Add deployment user
       user:
-        name: "{{ username }}"
-        password: "{{ password }}"
+        name: "{{ dep_user }}"
+        password: "{{ dep_pass }}"
 
     - name: install packages
       apt:
@@ -20,12 +21,12 @@
 
     - name: link to git
       git:
-        repo: "{{ git_repo }}"
-        dest: /home/{{ username }}/deploy
+        repo: "{{ git_repo1 }}"
+        dest: /home/{{ dep_user }}/deploy
 
     - name: copy php.ini file
       copy:
-        src: /home/{{ username }}/deploy/php.ini
+        src: /home/{{ dep_user }}/deploy/php.ini
         dest: /etc/php/7.0/fpm/php.ini
         remote_src: true
 
@@ -49,18 +50,18 @@
     - name: second git link
       git:
         repo: "{{ git_repo2 }}"
-        dest: /home/{{ username }}/silex
+        dest: /home/{{ dep_user }}/deploy
 
     - name: copy default nginx config file
       copy:
-        src: /home/{{ username }}/silex/playbook-files/nginx.conf
+        src: /home/{{ dep_user }}/deploy/playbook-files/nginx.conf
         dest: /etc/nginx/sites-available/default
         remote_src: true
 
     - name: Install composer
       composer: 
         command: install
-        working_dir: /home/{{ username }}/silex
+        working_dir: /home/{{ dep_user }}/deploy
 
     - name: restart services
       service:
@@ -72,18 +73,25 @@
       become: yes
       become_user: postgres
       postgresql_db:
-        name: "{{ database }}"
+        name: "{{ dep_db }}"
 
     - name: Create User
       become: yes
       become_user: postgres
-      postgresql_user: name={{ username }} password={{ password }} state=present role_attr_flags=SUPERUSER,CREATEDB
+      postgresql_user:
+        name: "{{ dep_user }}"
+        password: "{{ dep_pass }}"
+        state: present
+        role_attr_flags: SUPERUSER,CREATEDB
 
     - name: Provide user with DB permissions
       become: yes
       become_user: postgres
-      postgresql_user: user={{ username }} db={{ database }} priv=ALL
+      postgresql_user:
+        user: "{{ dep_user }}"
+        db: "{{ dep_db }}"
+        priv: ALL
 
     - template:
         src: playbook-files/config.php.j2
-        dest: /home/{{ username }}/silex/app/config.php
+        dest: /home/{{ dep_user }}/silex/app/config.php
