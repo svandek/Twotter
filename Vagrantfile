@@ -5,6 +5,7 @@ Vagrant.configure("2") do |config|
     
   config.vm.provision :ansible do |ansible|
     ansible.playbook = "playbook.yml"
+    ansible.vault_password_file = "twotter_vars/vault_pass.txt"
   end
 end
 
