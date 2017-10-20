@@ -17,7 +17,8 @@
 
     - name: install setfacl support
       become: yes
-      apt: pkg=acl
+      apt:
+        pkg: acl
 
     - name: link to git
       git:

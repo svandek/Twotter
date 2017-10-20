@@ -1,0 +1,43 @@
+- name: install php-fpm
+  apt:
+    name: php-fpm
+    state: installed
+    update_cache: true
+
+- name: update php config file
+  template:
+    src: config.php.j2
+    dest: app/config.php
+
+- name: update php ini file
+  template:
+    src: php.ini.j2
+    dest: /etc/php/7.0/fpm/php.ini
+  notify:
+    - restart php
+
+- name: get composer
+  shell: curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin
+  args:
+    creates: /usr/local/bin/composer.phar
+    warn: false
+
+- name: create link /usr/local/bin/composer to phar
+  file:
+    path: /usr/local/bin/composer
+    src: /usr/local/bin/composer.phar
+    state: link
+
+- name: update composer
+  shell: /usr/local/bin/composer.phar self-update
+  register: composer_update_result
+  changed_when: "'Updating to version' in composer_update_result.stdout"
+
+- name: Install composer
+  composer:
+    command: install
+    working_dir: /home/{{ dep_user }}/deploy
+
+- name: restart php
+  handlers:
+    - include: handlers/main.yml

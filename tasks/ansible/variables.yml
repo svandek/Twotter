@@ -1,9 +1,8 @@
+dep_user: deployer
+dep_pass: deployer
 packages:
   - git
-  - php-fpm
-  - nginx
   - curl
-  - postgresql
   - php-pgsql
   - python-psycopg2
 services:
