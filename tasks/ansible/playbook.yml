@@ -1,15 +1,31 @@
 - hosts: all
   become: yes
+#  vars:
+#    php_fpm_socket: "127.0.0.1:9002"
   pre_tasks:
     - include_vars: variables.yml
     - include_vars: vault.yml
-  tasks:
-    - name: Add deployment user
-      user:
-        name: "{{ dep_user }}"
-        password: "{{ dep_pass }}"
 
-    - name: install packages
+  roles:
+    - role: user
+      username: "{{ superuser }}"
+      password: "{{ vaulted_user_pw }}"
+
+    - role: nginx
+      root: /home/{{ superuser }}/deploy/web
+      server: localhost
+
+    - role: php
+      username: "{{ superuser }}"
+#      fpm_socket: "{{ php_fpm_socket }}"
+
+    - role: postgres
+      username: "{{ superuser }}"
+      password: "{{ vaulted_db_pw }}"
+      database: "{{ superuser }}"
+
+  tasks:
+    - name: install additional packages
       apt:
         name: "{{ packages }}"
         state: installed

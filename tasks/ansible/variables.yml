@@ -1,5 +1,6 @@
 dep_user: deployer
 dep_pass: deployer
+superuser: twotterer
 packages:
   - git
   - curl

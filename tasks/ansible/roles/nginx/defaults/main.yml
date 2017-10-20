@@ -1,2 +1,2 @@
-root_dir: /home/deployer/deploy/web
-server_name: localhost
+root_dir: "{{ root }}"
+server_name: "{{ server }}"

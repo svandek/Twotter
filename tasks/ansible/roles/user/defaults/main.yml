@@ -1,0 +1,2 @@
+dep_user: "{{ username }}"
+dep_pass: "{{ password }}"

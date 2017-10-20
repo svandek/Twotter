@@ -1,1 +1,1 @@
-dep_user: deployer
+dep_user: "{{ username }}"

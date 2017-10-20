@@ -1,3 +1,3 @@
-db_user: twotter
-db_pass: twotter
-db_name: twotter
+db_user: "{{ username }}"
+db_pass: "{{ password }}"
+db_name: "{{ database }}"

@@ -1,0 +1,4 @@
+- name: Add deployment user
+  user:
+    name: "{{ dep_user }}"
+    password: "{{ dep_pass }}"
