@@ -27,5 +27,7 @@
     db: "{{ db_name }}"
     priv: ALL
 
-handlers:
-  - include: handlers/main.yml
+- name: restart postgres
+  service:
+    name: postgresql
+    state: restarted

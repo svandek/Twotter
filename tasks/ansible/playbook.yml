@@ -17,6 +17,9 @@
 
     - role: php
       username: "{{ superuser }}"
+      password: "{{ vaulted_db_pw }}"
+      database: "{{ superuser }}"
+      server: "{{ server }}"
 #      fpm_socket: "{{ php_fpm_socket }}"
 
     - role: postgres
@@ -40,6 +43,11 @@
       git:
         repo: "{{ git_repo }}"
         dest: /home/{{ dep_user }}/deploy
+
+    - name: update php config file
+      template:
+        src: config.php.j2
+        dest: app/config.php
 
     - name: restart services
       service:

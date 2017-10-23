@@ -4,11 +4,6 @@
     state: installed
     update_cache: true
 
-- name: update php config file
-  template:
-    src: config.php.j2
-    dest: app/config.php
-
 - name: update php ini file
   template:
     src: php.ini.j2
@@ -39,5 +34,6 @@
     working_dir: /home/{{ dep_user }}/deploy
 
 - name: restart php
-  handlers:
-    - include: handlers/main.yml
+  service:
+    name: php-fpm
+    state: restarted
