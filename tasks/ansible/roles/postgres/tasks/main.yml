@@ -16,11 +16,9 @@
     src: pg_hba.conf.j2
     dest: /etc/postgresql/9.6/main/pg_hba.conf
   notify:
-    - restart postgresql
+    - restart postgres
 
 - name: Create Database
-  become: yes
-  become_user: postgres
   postgresql_db:
     name: "{{ db_name }}"
 
