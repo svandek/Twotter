@@ -10,7 +10,6 @@ packages:
   - git
   - curl
   - php-pgsql
-  - python-psycopg2
 services:
   - php7.0-fpm
   - nginx

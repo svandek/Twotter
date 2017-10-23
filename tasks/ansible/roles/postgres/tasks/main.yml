@@ -4,11 +4,25 @@
     state: installed
     update_cache: true
 
+- name: install postgresql package
+  apt:
+    pkg: python-psycopg2
+    state: latest
+  notify:
+    - restart postgres
+
+- name: update pg_hba.conf configuration
+  template:
+    src: pg_hba.conf.j2
+    dest: /etc/postgresql/9.6/main/pg_hba.conf
+  notify:
+    - restart postgresql
+
 - name: Create Database
   become: yes
   become_user: postgres
   postgresql_db:
-    name: "{{ db_user }}"
+    name: "{{ db_name }}"
 
 - name: Create User
   become: yes

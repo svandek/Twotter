@@ -5,16 +5,15 @@
   pre_tasks:
     - include_vars: variables.yml
     - include_vars: vault.yml
-    - name: link to git
-      git:
-        repo: "{{ git_repo }}"
-        dest: /home/{{ dep_user }}/deploy
     - name: install additional packages
       apt:
         name: "{{ packages }}"
         state: installed
         update_cache: true
-
+    - name: link to git
+      git:
+        repo: "{{ git_repo }}"
+        dest: /home/{{ dep_user }}/deploy
   roles:
     - role: user
       username: "{{ superuser }}"

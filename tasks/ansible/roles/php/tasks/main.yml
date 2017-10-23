@@ -9,7 +9,7 @@
     src: php.ini.j2
     dest: /etc/php/7.0/fpm/php.ini
   notify:
-    - restart php
+    - restart php-fpm
 
 - name: get composer
   shell: curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin
@@ -35,5 +35,5 @@
 
 - name: restart php
   service:
-    name: php-fpm
+    name: php7.0-fpm
     state: restarted
