@@ -5,6 +5,15 @@
   pre_tasks:
     - include_vars: variables.yml
     - include_vars: vault.yml
+    - name: link to git
+      git:
+        repo: "{{ git_repo }}"
+        dest: /home/{{ dep_user }}/deploy
+    - name: install additional packages
+      apt:
+        name: "{{ packages }}"
+        state: installed
+        update_cache: true
 
   roles:
     - role: user
@@ -28,21 +37,10 @@
       database: "{{ superuser }}"
 
   tasks:
-    - name: install additional packages
-      apt:
-        name: "{{ packages }}"
-        state: installed
-        update_cache: true
-
     - name: install setfacl support
       become: yes
       apt:
         pkg: acl
-
-    - name: link to git
-      git:
-        repo: "{{ git_repo }}"
-        dest: /home/{{ dep_user }}/deploy
 
     - name: update php config file
       template:

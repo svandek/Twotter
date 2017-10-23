@@ -1,10 +1,11 @@
-dep_user: deployer
-dep_pass: deployer
+dep_user: twotter
+dep_pass: twotter
 superuser: twotter
 db_user: twotter
 db_pass: "{{ vaulted_db_pw }}"
 db_name: twotter
 db_host: twotter
+git_repo: https://github.com/svandek/Twotter.git
 packages:
   - git
   - curl
