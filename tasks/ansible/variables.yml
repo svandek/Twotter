@@ -1,10 +1,10 @@
 dep_user: twotter
-dep_pass: twotter
+dep_pass: "{{ vaulted_user_pw }}"
 superuser: twotter
 db_user: twotter
 db_pass: "{{ vaulted_db_pw }}"
 db_name: twotter
-db_host: twotter
+db_host: localhost
 git_repo: https://github.com/svandek/Twotter.git
 packages:
   - git

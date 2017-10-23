@@ -44,7 +44,7 @@
     - name: update php config file
       template:
         src: config.php.j2
-        dest: app/config.php
+        dest: /home/{{ superuser }}/deploy/app/config.php
 
     - name: restart services
       service:
